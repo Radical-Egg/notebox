@@ -4,7 +4,6 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"database/sql"
 	"log"
 
 	"github.com/Radical-Egg/notebox/internal/database"
@@ -36,10 +35,12 @@ var writeCmd = &cobra.Command{
 
 		note := database.Note{Title: title, Content: ed.Content}
 		
-		db, err := sql.Open("sqlite3", "notes.db")
+		db, err := database.Connect()
+
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalln(err)
 		}
+
 		defer db.Close()
 		
 		t := database.CreateNote(db, note)
